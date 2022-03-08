@@ -3,7 +3,7 @@ import re
 import sys
 
 info = []
-# filename = "./yq_in_03.txt"
+# filename = "./yq_in.txt"
 filename = sys.argv[1]
 f = open(filename, 'r')
 line = f.readline()
@@ -28,12 +28,19 @@ path = filename.replace("in", "out")
 if os.path.exists(path):
     os.remove(path)
 
+isOneLine = True
 tmp = ""
 # 逐行写入文件，借助tmp变量来实现一个省份下面跟着市这种结构
 for i in info:
     f = open(path, 'a')
     if tmp != i['province']:
-        f.write('\n' + str(i['province']) + ':' + '\n')
+        if isOneLine:
+            f.write(str(i['province']) + ':' + '\n')
+            isOneLine = False
+        else:
+            f.write('\n' + str(i['province']) + ':' + '\n')
         tmp = i['province']
     f.write(str(i['city']) + '\t' + str(i['num']) + '\n')
     f.close()
+
+
